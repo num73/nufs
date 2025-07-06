@@ -8,8 +8,8 @@
 
 #define NUFS_PATH_PREFIX_LEN 9
 
-#define NUFS_PATH_CHECK(PATH) \
-	(!strncmp(PATH, NUFS_PATH_PREFIX, NUFS_PATH_PREFIX_LEN))
+#define NUFS_PATH_CHECK(PATH)                                                  \
+    (!strncmp(PATH, NUFS_PATH_PREFIX, NUFS_PATH_PREFIX_LEN))
 
 #define ABSOLUTE_PATH_CHECK(PATH) (PATH[0] == '/')
 

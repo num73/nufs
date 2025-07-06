@@ -38,7 +38,7 @@ LD_PRELOAD=./libnufs.so ./application
 
 ## Third ## 
 
-Some high performance tools.
+Some useful tools.
 
 ### syscall_intercept ###
 
@@ -47,3 +47,8 @@ Some high performance tools.
 
 http://doc.melonc.io/
 
+### glib2 ###
+
+https://docs.gtk.org/glib/
+
+If you don't need glib2, you can modify the `CMakeLists.txt` under the root directory.
