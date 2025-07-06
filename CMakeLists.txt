@@ -6,15 +6,14 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # Add compiler flags
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0")
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3")
 
 # Add the syscall_intercept subdirectory
 add_subdirectory(third/syscall_intercept)
+add_subdirectory(third/Melon)
 
-# Include directories
-include_directories(third/syscall_intercept/include)
 
 # Define source files explicitly
 set(NUFS_SOURCES
@@ -23,11 +22,21 @@ set(NUFS_SOURCES
     src/nufs.c
     # Add more source files here as needed
 )
+
 # Add the nufs shared library
 add_library(nufs SHARED ${NUFS_SOURCES})
 
-# Link nufs with syscall_intercept
-target_link_libraries(nufs PRIVATE syscall_intercept_shared)
+# 使用 target_* 命令来配置依赖（推荐方式）
+target_include_directories(nufs PRIVATE
+    third/syscall_intercept/include
+    third/Melon/include
+)
+
+# Link nufs with syscall_intercept and Melon
+target_link_libraries(nufs PRIVATE 
+    syscall_intercept_shared 
+    melon_static  # 使用 Melon 静态库
+)
 
 # Set output directory
 set_target_properties(nufs PROPERTIES
@@ -40,7 +49,7 @@ install(TARGETS nufs
     ARCHIVE DESTINATION lib
 )
 
-# Optional: Create a simple test target that can be used to verify the library works
+# Optional: Create a simple test target
 add_custom_target(test_nufs
     COMMAND echo "To test nufs library, use: LD_PRELOAD=./lib/libnufs.so <your_program>"
     DEPENDS nufs
