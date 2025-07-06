@@ -5,10 +5,12 @@
 #include <sys/types.h>
 
 #define NUFS_PATH_PREFIX (char *)"/mnt/nufs"
-#define NUFS_PATH_PREFIX_LEN 14
+
+#define NUFS_PATH_PREFIX_LEN 9
 
 #define NUFS_PATH_CHECK(PATH) \
 	(!strncmp(PATH, NUFS_PATH_PREFIX, NUFS_PATH_PREFIX_LEN))
+
 #define ABSOLUTE_PATH_CHECK(PATH) (PATH[0] == '/')
 
 #define NUFS_FD_PREFIX 0x1000000

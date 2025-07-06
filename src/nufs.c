@@ -1,5 +1,6 @@
 #include "nufs.h"
 #include <stdio.h>
+
 void display_nufs_info(void)
 {
 	printf("NUFS Path Prefix: %s\n", NUFS_PATH_PREFIX);
