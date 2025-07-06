@@ -20,6 +20,7 @@ include_directories(third/syscall_intercept/include)
 set(NUFS_SOURCES
     src/shim.c
     src/util.c
+    src/nufs.c
     # Add more source files here as needed
 )
 # Add the nufs shared library

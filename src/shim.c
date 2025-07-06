@@ -10,6 +10,7 @@
 #include <sys/types.h>
 #include <syscall.h>
 #include "util.h"
+#include "nufs.h"
 
 /* glibc syscall hooks */
 int shim_do_open(const char *pathname, int flags, mode_t mode, int *result)
@@ -700,4 +701,6 @@ static __attribute__((constructor)) void init(void)
 {
 	/* Set up the callback function */
 	intercept_hook_point = hook;
+
+	nufs_init();
 }
