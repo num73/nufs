@@ -18,5 +18,4 @@
 #define NUFS_FD_CHECK(FD) (FD & NUFS_FD_PREFIX)
 
 void nufs_init(void);
-
 #endif /* NUFS_H */
