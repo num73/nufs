@@ -9,9 +9,7 @@
 #include <sys/stat.h>
 #include <sys/syscall.h>
 #include <sys/time.h>
-#include <sys/types.h>
 #include <syscall.h>
-
 /* glibc syscall hooks */
 int shim_do_open(const char *pathname, int flags, mode_t mode, int *result) {
     int ret = 0;
@@ -22,7 +20,7 @@ int shim_do_open(const char *pathname, int flags, mode_t mode, int *result) {
     if (ABSOLUTE_PATH_CHECK(pathname)) {
         fullpath = pathname;
     } else {
-        util_get_fullpath(pathname, tmp);
+        nu_get_fullpath(pathname, tmp);
         fullpath = tmp;
     }
 
@@ -33,7 +31,7 @@ int shim_do_open(const char *pathname, int flags, mode_t mode, int *result) {
 
     /* Go through NUFS */
     // todo
-    // ret = nufs_open(pathname, flags, mode);
+    ret = nufs_open(pathname, flags, mode);
 
     *result = ret;
     return 0;
@@ -49,7 +47,7 @@ int shim_do_openat(int dfd, const char *pathname, int flags, mode_t mode,
     if (ABSOLUTE_PATH_CHECK(pathname)) {
         fullpath = (char *)pathname;
     } else {
-        util_get_fullpath(pathname, tmp);
+        nu_get_fullpath(pathname, tmp);
         fullpath = tmp;
     }
 
@@ -59,8 +57,7 @@ int shim_do_openat(int dfd, const char *pathname, int flags, mode_t mode,
     }
 
     /* Go through NUFS */
-    // todo
-    // ret = nufs_open((char *)pathname, flags, mode);
+    ret = nufs_open((char *)pathname, flags, mode);
 
     *result = ret;
     return 0;
@@ -75,7 +72,7 @@ int shim_do_create(const char *pathname, mode_t mode, int *result) {
     if (ABSOLUTE_PATH_CHECK(pathname)) {
         fullpath = pathname;
     } else {
-        util_get_fullpath(pathname, tmp);
+        nu_get_fullpath(pathname, tmp);
         fullpath = tmp;
     }
 
@@ -85,8 +82,7 @@ int shim_do_create(const char *pathname, mode_t mode, int *result) {
     }
 
     /* Go through NUFS */
-    // todo
-    // ret = nufs_creat(pathname, mode);
+    ret = nufs_creat(pathname, mode);
 
     *result = ret;
     return 0;
@@ -101,8 +97,8 @@ int shim_do_read(int fd, void *buf, size_t count, ssize_t *result) {
     }
 
     /* Go through NUFS */
-    // todo
-    // ret = nufs_read(fd, buf, count);
+    
+    ret = nufs_read(fd, buf, count);
 
     *result = ret;
     return 0;
@@ -118,8 +114,7 @@ int shim_do_pread64(int fd, void *buf, size_t count, off_t off,
     }
 
     /* Go through NUFS */
-    // todo
-    // ret = nufs_pread(fd, buf, count, off);
+    ret = nufs_pread(fd, buf, count, off);
 
     *result = ret;
     return 0;
@@ -134,8 +129,7 @@ int shim_do_write(int fd, void *buf, size_t count, ssize_t *result) {
     }
 
     /* Go through NUFS */
-    // todo
-    // ret = nufs_write(fd, buf, count);
+    ret = nufs_write(fd, buf, count);
 
     *result = ret;
     return 0;
@@ -151,8 +145,7 @@ int shim_do_pwrite64(int fd, void *buf, size_t count, off_t off,
     }
 
     /* Go through NUFS */
-    // todo
-    // ret = nufs_pwrite(fd, buf, count, off);
+    ret = nufs_pwrite(fd, buf, count, off);
 
     *result = ret;
     return 0;
@@ -167,8 +160,7 @@ int shim_do_close(int fd, int *result) {
     }
 
     /* Go through NUFS */
-    // todo
-    // ret = nufs_close(fd);
+    ret = nufs_close(fd);
 
     *result = ret;
     return 0;
@@ -183,8 +175,7 @@ int shim_do_lseek(int fd, off_t offset, int origin, off_t *result) {
     }
 
     /* Go through NUFS */
-    // todo
-    // ret = nufs_lseek(fd, offset, origin);
+    ret = nufs_lseek(fd, offset, origin);
 
     *result = ret;
     return 0;
@@ -199,7 +190,7 @@ int shim_do_mkdir(const char *pathname, mode_t mode, int *result) {
     if (ABSOLUTE_PATH_CHECK(pathname)) {
         fullpath = pathname;
     } else {
-        util_get_fullpath(pathname, tmp);
+        nu_get_fullpath(pathname, tmp);
         fullpath = tmp;
     }
 
@@ -209,8 +200,7 @@ int shim_do_mkdir(const char *pathname, mode_t mode, int *result) {
     }
 
     /* Go through NUFS */
-    // todo
-    // ret = nufs_mkdir(pathname, mode);
+    ret = nufs_mkdir(pathname, mode);
 
     *result = ret;
     return 0;
@@ -225,7 +215,7 @@ int shim_do_rmdir(const char *pathname, int *result) {
     if (ABSOLUTE_PATH_CHECK(pathname)) {
         fullpath = pathname;
     } else {
-        util_get_fullpath(pathname, tmp);
+        nu_get_fullpath(pathname, tmp);
         fullpath = tmp;
     }
 
@@ -235,8 +225,7 @@ int shim_do_rmdir(const char *pathname, int *result) {
     }
 
     /* Go through NUFS */
-    // todo
-    // ret = nufs_rmdir(pathname);
+    ret = nufs_rmdir(pathname);
 
     *result = ret;
     return 0;
@@ -253,14 +242,14 @@ int shim_do_rename(const char *oldname, const char *newname, int *result) {
     if (ABSOLUTE_PATH_CHECK(oldname)) {
         fulloldpath = oldname;
     } else {
-        util_get_fullpath(oldname, oldpathtmp);
+        nu_get_fullpath(oldname, oldpathtmp);
         fulloldpath = oldpathtmp;
     }
 
     if (ABSOLUTE_PATH_CHECK(newname)) {
         fullnewpath = newname;
     } else {
-        util_get_fullpath(newname, newpathtmp);
+        nu_get_fullpath(newname, newpathtmp);
         fullnewpath = newpathtmp;
     }
 
@@ -270,8 +259,7 @@ int shim_do_rename(const char *oldname, const char *newname, int *result) {
     }
 
     /* Go through NUFS */
-    // todo
-    // ret = nufs_rename(oldname, newname);
+    ret = nufs_rename(oldname, newname);
 
     *result = ret;
     return 0;
@@ -286,8 +274,7 @@ int shim_do_fallocate(int fd, int mode, off_t offset, off_t len, int *result) {
     }
 
     /* Go through NUFS */
-    // todo
-    // ret = nufs_fallocate(fd, mode, offset, len);
+    ret = nufs_fallocate(fd, mode, offset, len);
 
     *result = ret;
     return 0;
@@ -302,7 +289,7 @@ int shim_do_stat(const char *pathname, struct stat *statbuf, int *result) {
     if (ABSOLUTE_PATH_CHECK(pathname)) {
         fullpath = pathname;
     } else {
-        util_get_fullpath(pathname, tmp);
+        nu_get_fullpath(pathname, tmp);
         fullpath = tmp;
     }
 
@@ -312,8 +299,7 @@ int shim_do_stat(const char *pathname, struct stat *statbuf, int *result) {
     }
 
     /* Go through NUFS */
-    // todo
-    // ret = nufs_stat(pathname, statbuf);
+    ret = nufs_stat(pathname, statbuf);
 
     *result = ret;
     return 0;
@@ -328,7 +314,7 @@ int shim_do_lstat(const char *pathname, struct stat *statbuf, int *result) {
     if (ABSOLUTE_PATH_CHECK(pathname)) {
         fullpath = pathname;
     } else {
-        util_get_fullpath(pathname, tmp);
+        nu_get_fullpath(pathname, tmp);
         fullpath = tmp;
     }
 
@@ -339,7 +325,7 @@ int shim_do_lstat(const char *pathname, struct stat *statbuf, int *result) {
 
     /* Go through NUFS */
     // todo
-    // ret = nufs_lstat(pathname, statbuf);
+    ret = nufs_lstat(pathname, statbuf);
 
     *result = ret;
     return 0;
@@ -353,9 +339,8 @@ int shim_do_fstat(int fd, struct stat *statbuf, int *result) {
         return 1;
     }
 
-    /* Go through PolyStore */
-    // todo
-    // ret = nufs_fstat(fd, statbuf);
+    /* Go through NUFS */
+    ret = nufs_fstat(fd, statbuf);
 
     *result = ret;
     return 0;
@@ -375,7 +360,7 @@ int shim_do_fstatat(int dirfd, const char *pathname, struct stat *statbuf,
     if (ABSOLUTE_PATH_CHECK(pathname)) {
         fullpath = pathname;
     } else {
-        util_get_fullpath(pathname, tmp);
+        nu_get_fullpath(pathname, tmp);
         fullpath = tmp;
     }
 
@@ -385,8 +370,7 @@ int shim_do_fstatat(int dirfd, const char *pathname, struct stat *statbuf,
     }
 
     /* Go through NUFS */
-    // todo
-    // ret = nufs_stat(pathname, statbuf);
+    ret = nufs_stat(pathname, statbuf);
 
     *result = ret;
     return 0;
@@ -401,7 +385,7 @@ int shim_do_truncate(const char *pathname, off_t length, int *result) {
     if (ABSOLUTE_PATH_CHECK(pathname)) {
         fullpath = pathname;
     } else {
-        util_get_fullpath(pathname, tmp);
+        nu_get_fullpath(pathname, tmp);
         fullpath = tmp;
     }
 
@@ -411,8 +395,7 @@ int shim_do_truncate(const char *pathname, off_t length, int *result) {
     }
 
     /* Go through NUFS */
-    // todo
-    // ret = nufs_truncate(pathname, length);
+    ret = nufs_truncate(pathname, length);
 
     *result = ret;
     return 0;
@@ -427,8 +410,7 @@ int shim_do_ftruncate(int fd, off_t length, int *result) {
     }
 
     /* Go through NUFS */
-    // todo
-    // ret = nufs_ftruncate(fd, length);
+    ret = nufs_ftruncate(fd, length);
 
     *result = ret;
     return 0;
@@ -443,7 +425,7 @@ int shim_do_unlink(const char *pathname, int *result) {
     if (ABSOLUTE_PATH_CHECK(pathname)) {
         fullpath = pathname;
     } else {
-        util_get_fullpath(pathname, tmp);
+        nu_get_fullpath(pathname, tmp);
         fullpath = tmp;
     }
 
@@ -453,8 +435,7 @@ int shim_do_unlink(const char *pathname, int *result) {
     }
 
     /* Go through NUFS */
-    // todo
-    // ret = nufs_unlink(pathname);
+    ret = nufs_unlink(pathname);
 
     *result = ret;
     return 0;
@@ -471,14 +452,14 @@ int shim_do_symlink(const char *target, const char *linkpath, int *result) {
     if (ABSOLUTE_PATH_CHECK(target)) {
         fulltarget = target;
     } else {
-        util_get_fullpath(target, targettmp);
+        nu_get_fullpath(target, targettmp);
         fulltarget = targettmp;
     }
 
     if (ABSOLUTE_PATH_CHECK(linkpath)) {
         fulllinkpath = linkpath;
     } else {
-        util_get_fullpath(linkpath, linkpathtmp);
+        nu_get_fullpath(linkpath, linkpathtmp);
         fulllinkpath = linkpathtmp;
     }
 
@@ -488,8 +469,7 @@ int shim_do_symlink(const char *target, const char *linkpath, int *result) {
     }
 
     /* Go through NUFS */
-    // todo
-    // ret = nufs_symlink(target, linkpath);
+    ret = nufs_symlink(target, linkpath);
 
     *result = ret;
     return 0;
@@ -504,7 +484,7 @@ int shim_do_access(const char *pathname, int mode, int *result) {
     if (ABSOLUTE_PATH_CHECK(pathname)) {
         fullpath = pathname;
     } else {
-        util_get_fullpath(pathname, tmp);
+        nu_get_fullpath(pathname, tmp);
         fullpath = tmp;
     }
 
@@ -515,7 +495,7 @@ int shim_do_access(const char *pathname, int mode, int *result) {
 
     /* Go through NUFS */
     // todo
-    // ret = nufs_access(pathname, mode);
+    ret = nufs_access(pathname, mode);
 
     *result = ret;
     return 0;
@@ -530,8 +510,7 @@ int shim_do_fsync(int fd, int *result) {
     }
 
     /* Go through NUFS */
-    // todo
-    // ret = nufs_fsync(fd);
+    ret = nufs_fsync(fd);
 
     *result = ret;
     return 0;
@@ -546,8 +525,7 @@ int shim_do_fdatasync(int fd, int *result) {
     }
 
     /* Go through NUFS */
-    // todo
-    // ret = nufs_fdatasync(fd);
+    ret = nufs_fdatasync(fd);
 
     *result = ret;
     return 0;
@@ -564,8 +542,7 @@ int shim_do_fcntl(int fd, int cmd, void *arg, int *result) {
     }
 
     /* Go through NUFS */
-    // todo
-    // ret = nufs_fcntl(fd, cmd, arg);
+    ret = nufs_fcntl(fd, cmd, arg);
 
     *result = ret;
     return 0;

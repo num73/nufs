@@ -11,7 +11,7 @@
 static void test_util_get_fullpath(void) {
 
     char *fullpath = malloc(PATH_MAX);
-    util_get_fullpath("test.txt", fullpath);
+    nu_get_fullpath("test.txt", fullpath);
     g_assert_nonnull(fullpath);
     g_assert_cmpstr(fullpath, ==, "/home/num73/nufs/build/gtest/test.txt");
     g_free(fullpath);
