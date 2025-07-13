@@ -10,6 +10,11 @@
 #include <sys/syscall.h>
 #include <sys/time.h>
 #include <syscall.h>
+
+static void safe_print(const char *msg) {
+    syscall_no_intercept(SYS_write, STDOUT_FILENO, msg, strlen(msg));
+}
+
 /* glibc syscall hooks */
 int shim_do_open(const char *pathname, int flags, mode_t mode, int *result) {
     int ret = 0;
@@ -557,6 +562,7 @@ int shim_do_munmap(void *addr, size_t length, int *result) { return 1; }
 
 static int hook(long syscall_number, long arg0, long arg1, long arg2, long arg3,
                 long arg4, long arg5, long *result) {
+
     switch (syscall_number) {
     case SYS_open:
         return shim_do_open((const char *)arg0, (int)arg1, (mode_t)arg2,
@@ -631,7 +637,6 @@ static int hook(long syscall_number, long arg0, long arg1, long arg2, long arg3,
     case SYS_munmap:
         return shim_do_munmap((void *)arg0, (size_t)arg1, (int *)result);
     }
-
     return 1;
 }
 

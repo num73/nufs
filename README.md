@@ -61,3 +61,13 @@ http://doc.melonc.io/
 https://docs.gtk.org/glib/
 
 If you don't need glib2, you can modify the `CMakeLists.txt` under the root directory.
+
+> note: The glib2 and Melon are not compatible with each other!! There may be bugs if you use both of them.
+
+
+# Notice! #
+
+> **You have to deal with the `printf` or other log functions very carefully, no `printf` or `log functions` are suggested in `static __attribute__((constructor)) void init(void)`**
+
+
+> **If you encounter `segmentation fault`, it may be due to the problem of circular calls to intercepted functions.**

@@ -2,7 +2,7 @@
 
 message(STATUS "Configuring third party dependencies...")
 
-option(ENABLE_GLIB2 "Enable GLib2 support" ON)
+option(ENABLE_GLIB2 "Enable GLib2 support" OFF)
 
 # Add third party libraries
 add_subdirectory(syscall_intercept)

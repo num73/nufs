@@ -18,6 +18,39 @@ Some basic tools are provided.
 
 ## Posix Syscall
 
+The following table lists the POSIX system calls you need to support: 
+
+| System Call | Description |
+|-------------|-------------|
+| `SYS_open` | Open a file and return a file descriptor |
+| `SYS_openat` | Open a file relative to a directory file descriptor |
+| `SYS_creat` | Create a file (equivalent to open with O_CREAT\|O_WRONLY\|O_TRUNC) |
+| `SYS_read` | Read data from a file descriptor |
+| `SYS_pread64` | Read data from a specific offset in a file without changing file pointer |
+| `SYS_write` | Write data to a file descriptor |
+| `SYS_pwrite64` | Write data to a specific offset in a file without changing file pointer |
+| `SYS_close` | Close a file descriptor |
+| `SYS_lseek` | Move file pointer to a specified position |
+| `SYS_mkdir` | Create a directory |
+| `SYS_rmdir` | Remove an empty directory |
+| `SYS_rename` | Rename a file or directory |
+| `SYS_fallocate` | Preallocate space for a file |
+| `SYS_stat` | Get file status information |
+| `SYS_newfstatat` | Get file status information relative to a directory file descriptor |
+| `SYS_lstat` | Get status information of a symbolic link itself (without following the link) |
+| `SYS_fstat` | Get file status information through a file descriptor |
+| `SYS_truncate` | Truncate a file to a specified length by path |
+| `SYS_ftruncate` | Truncate a file to a specified length by file descriptor |
+| `SYS_unlink` | Delete a file |
+| `SYS_symlink` | Create a symbolic link |
+| `SYS_access` | Check file access permissions |
+| `SYS_fsync` | Synchronize file data and metadata to storage device |
+| `SYS_fdatasync` | Synchronize file data to storage device (excluding metadata) |
+| `SYS_sync` | Synchronize all filesystem buffers to storage device |
+| `SYS_fcntl` | File control operations (such as setting file status flags) |
+| `SYS_mmap` | Map a file into memory |
+| `SYS_munmap` | Unmap memory mapping |
+
 ```c
 
 static int hook(long syscall_number, long arg0, long arg1, long arg2, long arg3,
