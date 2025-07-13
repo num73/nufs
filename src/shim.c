@@ -10,6 +10,7 @@
 #include <sys/syscall.h>
 #include <sys/time.h>
 #include <syscall.h>
+#include <unistd.h>
 
 static void safe_print(const char *msg) {
     syscall_no_intercept(SYS_write, STDOUT_FILENO, msg, strlen(msg));
