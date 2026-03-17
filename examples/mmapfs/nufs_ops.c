@@ -25,11 +25,11 @@
 
 #define MMAPFS_LOCK() pthread_mutex_lock(&mmapfs_get_state()->lock)
 #define MMAPFS_UNLOCK() pthread_mutex_unlock(&mmapfs_get_state()->lock)
-#define MMAPFS_FD_INDEX(fd) ((fd) - NUFS_FD_PREFIX)
+#define MMAPFS_FD_TO_INDEX(fd) ((fd) - NUFS_FD_PREFIX)
 
 /* Validate an FD and return the table entry, or NULL on error. */
 static struct mmapfs_fd *fd_get(int fd) {
-    int idx = MMAPFS_FD_INDEX(fd);
+    int idx = MMAPFS_FD_TO_INDEX(fd);
     struct mmapfs_state *st = mmapfs_get_state();
     if (idx < 0 || idx >= MMAPFS_MAX_OPEN_FILES)
         return NULL;
@@ -829,6 +829,9 @@ int nufs_fcntl(int fd, int cmd, void *arg) {
         ret = fde->flags;
         break;
     case F_SETFL:
+        /* Cast via long to safely convert a pointer-width value to int,
+         * matching the glibc convention where fcntl varargs pass int
+         * values widened to long/pointer size. */
         fde->flags = (int)(long)arg;
         ret = 0;
         break;

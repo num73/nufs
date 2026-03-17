@@ -211,9 +211,18 @@ int mmapfs_inode_truncate(uint32_t ino, off_t length) {
         if (blk != 0) {
             mmapfs_free_block(blk);
             mmapfs_inode_clear_block(inode, i);
-            if (inode->i_blocks > 0)
-                inode->i_blocks--;
+            inode->i_blocks--;
         }
+    }
+
+    /* Free indirect metadata blocks that are now completely empty.
+     * Only the single-indirect block is checked here for simplicity;
+     * a production filesystem would also clean up double-indirect
+     * entries. */
+    if (new_nblocks <= MMAPFS_DIRECT_BLOCKS && inode->i_indirect != 0) {
+        mmapfs_free_block(inode->i_indirect);
+        inode->i_indirect = 0;
+        inode->i_blocks--;
     }
 
     /* Zero the partial tail of the last remaining block */

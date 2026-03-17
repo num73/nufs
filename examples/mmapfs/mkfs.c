@@ -32,8 +32,9 @@ int main(int argc, char *argv[]) {
     const char *path = argv[1];
     size_t size = MMAPFS_DEFAULT_SIZE;
     if (argc >= 3) {
-        long mb = atol(argv[2]);
-        if (mb <= 0) {
+        char *endptr;
+        long mb = strtol(argv[2], &endptr, 10);
+        if (*endptr != '\0' || mb <= 0) {
             fprintf(stderr, "Invalid size: %s\n", argv[2]);
             return 1;
         }
