@@ -42,7 +42,7 @@ LD_PRELOAD=./libnufs.so ./application
 
 ## gtest #
 
-Unit testing is a very useful tool in software development, and everyone who has used it speaks highly of it. The directory structure of nufs includes the glib2 unit testing framework gtest. You can choose to use it or not.
+Unit testing is a very useful tool in software development, and everyone who has used it speaks highly of it. The directory structure of nufs includes a unit testing framework under the `gtest` directory. You can choose to use it or not.
 
 ## Third ## 
 
@@ -55,14 +55,6 @@ https://github.com/pmem/syscall_intercept
 ### Melon ### 
 
 http://doc.melonc.io/
-
-### glib2 ###
-
-https://docs.gtk.org/glib/
-
-If you don't need glib2, you can modify the `CMakeLists.txt` under the root directory.
-
-> note: The glib2 and Melon are not compatible with each other!! There may be bugs if you use both of them.
 
 
 # Notice! #

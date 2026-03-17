@@ -1,11 +1,6 @@
-# gtest/CMakeLists.txt - GLib2 GTest 框架配置
+# gtest/CMakeLists.txt - 测试框架配置
 
-message(STATUS "Configuring GLib2 GTest framework...")
-
-# 确保 GLib2 可用
-if(NOT GLIB2_ENABLED)
-    message(FATAL_ERROR "GLib2 is required for GTest but not enabled")
-endif()
+message(STATUS "Configuring test framework...")
 
 # 测试源文件
 set(TEST_SOURCES
@@ -34,9 +29,8 @@ foreach(test_source ${TEST_SOURCES})
     # 添加测试到 CTest
     add_test(NAME ${test_name} COMMAND ${test_name})
     
-    # 设置测试环境变量
+    # 设置测试超时
     set_tests_properties(${test_name} PROPERTIES
-        ENVIRONMENT "NUFS_TEST_MODE=1;G_TEST_SRCDIR=${CMAKE_CURRENT_SOURCE_DIR}"
         TIMEOUT 30
     )
     
@@ -48,7 +42,7 @@ endforeach()
 add_custom_target(run_tests
     COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
     DEPENDS ${TEST_SOURCES}
-    COMMENT "Running all GLib2 GTest tests"
+    COMMENT "Running all tests"
 )
 
-message(STATUS "GLib2 GTest framework configured with ${CMAKE_CURRENT_SOURCE_DIR}")
+message(STATUS "Test framework configured with ${CMAKE_CURRENT_SOURCE_DIR}")
