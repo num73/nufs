@@ -11,7 +11,7 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0")
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3")
 
 # 添加测试选项
-option(BUILD_TESTS "Build unit tests with GLib2 GTest" ON)
+option(BUILD_TESTS "Build unit tests" ON)
 
 # Add all third party dependencies (包含所有配置)
 add_subdirectory(third)
@@ -35,14 +35,8 @@ set_target_properties(nufs PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
 )
 
-# ===== GTest 配置 =====
+# ===== 测试配置 =====
 if(BUILD_TESTS)
-    message(STATUS "Configuring GTest framework with GLib2 support")
-    # 确保 GLib2 可用
-    if(NOT GLIB2_ENABLED)
-        message(FATAL_ERROR "GLib2 is required for testing but not enabled. Please enable GLib2 or disable tests.")
-    endif()
-    
     enable_testing()
     
     # 创建测试用的静态库（避免 LD_PRELOAD 问题）
@@ -52,7 +46,7 @@ if(BUILD_TESTS)
     # 添加 gtest 子目录
     add_subdirectory(gtest)
     
-    message(STATUS "GLib2 GTest framework configured successfully")
+    message(STATUS "Test framework configured successfully")
 endif()
 
 # Install targets
@@ -74,6 +68,5 @@ message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "C compiler: ${CMAKE_C_COMPILER}")
 message(STATUS "C flags: ${CMAKE_C_FLAGS}")
 message(STATUS "Third party configured: ${THIRD_PARTY_CONFIGURED}")
-message(STATUS "GLib2 support: ${GLIB2_ENABLED}")
 message(STATUS "Build tests: ${BUILD_TESTS}")
 message(STATUS "Installing to: ${CMAKE_INSTALL_PREFIX}")
