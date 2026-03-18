@@ -13,6 +13,9 @@ set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3")
 # 添加测试选项
 option(BUILD_TESTS "Build unit tests" ON)
 
+# 添加示例选项
+option(BUILD_EXAMPLES "Build example filesystems" ON)
+
 # Add all third party dependencies (包含所有配置)
 add_subdirectory(third)
 
@@ -47,6 +50,12 @@ if(BUILD_TESTS)
     add_subdirectory(gtest)
     
     message(STATUS "Test framework configured successfully")
+endif()
+
+# ===== 示例配置 =====
+if(BUILD_EXAMPLES)
+    add_subdirectory(examples)
+    message(STATUS "Example filesystems configured successfully")
 endif()
 
 # Install targets
